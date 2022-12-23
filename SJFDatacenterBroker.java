@@ -1,5 +1,4 @@
-package simProject;
-
+package sjf;
 
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.core.CloudSim;

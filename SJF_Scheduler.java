@@ -1,4 +1,4 @@
-package simProject;
+package sjf;
 
 
 import org.cloudbus.cloudsim.*;
@@ -9,6 +9,9 @@ import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
 //import utils.Constants;
 //import utils.DatacenterCreator;
 //import utils.GenerateMatrices;
+import sjf.GenerateMatrices;
+import sjf.DatacenterCreator;
+
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -60,7 +63,7 @@ public class SJF_Scheduler {
         Cloudlet[] cloudlet = new Cloudlet[cloudlets];
 
         for (int i = 0; i < cloudlets; i++) {
-            int dcId = (int) (Math.random() * Constants.NO_OF_DATA_CENTERS);
+            int dcId = (int) (Math.random() * val.get_data_center());
             long length = (long) (1e3 * (commMatrix[i][dcId] + execMatrix[i][dcId]));
             cloudlet[i] = new Cloudlet(idShift + i, length, pesNumber, fileSize, outputSize, utilizationModel, utilizationModel, utilizationModel);
             // setting the owner of these Cloudlets
@@ -86,8 +89,8 @@ public class SJF_Scheduler {
             CloudSim.init(num_user, calendar, trace_flag);
 
             // Second step: Create Datacenters
-            datacenter = new Datacenter[Constants.NO_OF_DATA_CENTERS];
-            for (int i = 0; i < Constants.NO_OF_DATA_CENTERS; i++) {
+            datacenter = new Datacenter[val.get_data_center()];
+            for (int i = 0; i < val.get_data_center(); i++) {
                 datacenter[i] = DatacenterCreator.createDatacenter("Datacenter_" + i);
             }
 
@@ -96,8 +99,8 @@ public class SJF_Scheduler {
             int brokerId = broker.getId();
 
             //Fourth step: Create VMs and Cloudlets and send them to broker
-            vmList = createVM(brokerId, Constants.NO_OF_DATA_CENTERS);
-            cloudletList = createCloudlet(brokerId, Constants.NO_OF_TASKS, 0);
+            vmList = createVM(brokerId, val.get_data_center());
+            cloudletList = createCloudlet(brokerId, val.get_task(), 0);
 
             broker.submitVmList(vmList);
             broker.submitCloudletList(cloudletList);
@@ -167,10 +170,10 @@ public class SJF_Scheduler {
 
     private static double calcMakespan(List<Cloudlet> list) {
         double makespan = 0;
-        double[] dcWorkingTime = new double[Constants.NO_OF_DATA_CENTERS];
+        double[] dcWorkingTime = new double[val.get_data_center()];
 
-        for (int i = 0; i < Constants.NO_OF_TASKS; i++) {
-            int dcId = list.get(i).getVmId() % Constants.NO_OF_DATA_CENTERS;
+        for (int i = 0; i < val.get_data_center(); i++) {
+            int dcId = list.get(i).getVmId() % val.get_data_center();
             if (dcWorkingTime[dcId] != 0) --dcWorkingTime[dcId];
             dcWorkingTime[dcId] += execMatrix[i][dcId] + commMatrix[i][dcId];
             makespan = Math.max(makespan, dcWorkingTime[dcId]);

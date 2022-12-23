@@ -1,7 +1,35 @@
-package simProject;
+package sjf;
 
 
 import java.io.*;
+
+
+
+
+
+class val {	
+	public static final int get_task() {  // number of Cloudlets;
+	    return 30;
+	  }
+	public static final int get_data_center() {  // number of Datacenters;
+	    return 5;
+	  }
+	public static final int get_users() {  // Number of Particles.
+	    return 25;
+	  }
+	
+}
+
+
+
+
+
+
+
+
+
+
+
 
 public class GenerateMatrices {
     private static double[][] commMatrix, execMatrix;
@@ -9,8 +37,8 @@ public class GenerateMatrices {
     private File execFile = new File("ExecutionTimeMatrix.txt");
 
     public GenerateMatrices() {
-        commMatrix = new double[Constants.NO_OF_TASKS][Constants.NO_OF_DATA_CENTERS];
-        execMatrix = new double[Constants.NO_OF_TASKS][Constants.NO_OF_DATA_CENTERS];
+        commMatrix = new double[val.get_task()][val.get_data_center()];
+        execMatrix = new double[val.get_task()][val.get_data_center()];
         try {
             if (commFile.exists() && execFile.exists()) {
                 readCostMatrix();
@@ -27,8 +55,8 @@ public class GenerateMatrices {
         BufferedWriter commBufferedWriter = new BufferedWriter(new FileWriter(commFile));
         BufferedWriter execBufferedWriter = new BufferedWriter(new FileWriter(execFile));
 
-        for (int i = 0; i < Constants.NO_OF_TASKS; i++) {
-            for (int j = 0; j < Constants.NO_OF_DATA_CENTERS; j++) {
+        for (int i = 0; i < val.get_task(); i++) {
+            for (int j = 0; j < val.get_data_center(); j++) {
                 commMatrix[i][j] = Math.random() * 600 + 20;
                 execMatrix[i][j] = Math.random() * 500 + 10;
                 commBufferedWriter.write(String.valueOf(commMatrix[i][j]) + ' ');
