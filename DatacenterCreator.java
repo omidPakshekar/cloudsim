@@ -1,4 +1,4 @@
-package simProject;
+package cloudsimProject.cloudsim;
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;

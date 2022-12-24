@@ -1,4 +1,4 @@
-package sjf;
+package cloudsimProject.cloudsim;
 
 
 import org.cloudbus.cloudsim.*;
@@ -94,7 +94,7 @@ public class SJF_Scheduler {
             }
 
             //Third step: Create Broker
-            SJFDatacenterBroker broker = createBroker("Broker_0");
+            DatacenterBroker1 broker = createBroker("Broker_0");
 //            DatacenterBroker broker = createBroker("Broker_1");
             int brokerId = broker.getId();
 
@@ -123,8 +123,8 @@ public class SJF_Scheduler {
         }
     }
 
-    private static SJFDatacenterBroker createBroker(String name) throws Exception {
-        return new SJFDatacenterBroker(name);
+    private static DatacenterBroker1 createBroker(String name) throws Exception {
+        return new DatacenterBroker1(name);
     }
 
     /**

@@ -9,9 +9,9 @@ import org.cloudbus.cloudsim.core.SimEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SJFDatacenterBroker extends DatacenterBroker {
+public class DatacenterBroker1 extends DatacenterBroker {
 
-    SJFDatacenterBroker(String name) throws Exception {
+    DatacenterBroker1(String name) throws Exception {
         super(name);
     }
 
@@ -25,34 +25,18 @@ public class SJFDatacenterBroker extends DatacenterBroker {
             System.out.println("Task" + cloudletList.get(i).getCloudletId() + " is bound with VM" + vmList.get(i % reqVms).getId());
         }
 
-        //System.out.println("reqTasks: "+ reqTasks);
 
         ArrayList<Cloudlet> list = new ArrayList<Cloudlet>();
         for (Cloudlet cloudlet : getCloudletReceivedList()) {
             list.add(cloudlet);
         }
 
-        //setCloudletReceivedList(null);
 
         Cloudlet[] list2 = list.toArray(new Cloudlet[list.size()]);
 
-        //System.out.println("size :"+list.size());
 
         Cloudlet temp = null;
 
-        int n = list.size();
-        for (int i = 0; i < n; i++) {
-            for (int j = 1; j < (n - i); j++) {
-                if (list2[j - 1].getCloudletLength() / (vm.getMips() * vm.getNumberOfPes()) > list2[j].getCloudletLength() / (vm.getMips() * vm.getNumberOfPes())) {
-                    //swap the elements!
-                    //swap(list2[j-1], list2[j]);
-                    temp = list2[j - 1];
-                    list2[j - 1] = list2[j];
-                    list2[j] = temp;
-                }
-                // printNumbers(list2);
-            }
-        }
 
         list = new ArrayList<Cloudlet>();
         //
@@ -62,12 +46,10 @@ public class SJFDatacenterBroker extends DatacenterBroker {
 
 
         setCloudletReceivedList(list); 
-        //printNumbers(list);
 
         setCloudletReceivedList(list);
 
-        //System.out.println("\n\tSJFS Broker Schedules\n");
-        //System.out.println("\n");
+
     }
 
     public void printNumber(Cloudlet[] list) {
