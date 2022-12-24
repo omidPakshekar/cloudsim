@@ -1,4 +1,5 @@
-package simProject;
+package sjf;
+
 
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.core.CloudSim;
@@ -13,19 +14,16 @@ public class SJFDatacenterBroker extends DatacenterBroker {
     SJFDatacenterBroker(String name) throws Exception {
         super(name);
     }
-   
 
     public void scheduleTaskstoVms() {
         int reqTasks = cloudletList.size();
         int reqVms = vmList.size();
         Vm vm = vmList.get(0);
-        
 
-//        for (int i = 0; i < reqTasks; i++) {
-//            System.out.println("%%%%%%%%%%%%%%%%fffffffffffffff%%%%%%%%%%");
-//            bindCloudletToVm(i, (i % reqVms));
-//            System.out.println("Task" + cloudletList.get(i).getCloudletId() + " is bound with VM" + vmList.get(i % reqVms).getId());
-//        }
+        for (int i = 0; i < reqTasks; i++) {
+            bindCloudletToVm(i, (i % reqVms));
+            System.out.println("Task" + cloudletList.get(i).getCloudletId() + " is bound with VM" + vmList.get(i % reqVms).getId());
+        }
 
         //System.out.println("reqTasks: "+ reqTasks);
 
@@ -43,13 +41,12 @@ public class SJFDatacenterBroker extends DatacenterBroker {
         Cloudlet temp = null;
 
         int n = list.size();
-
         for (int i = 0; i < n; i++) {
             for (int j = 1; j < (n - i); j++) {
                 if (list2[j - 1].getCloudletLength() / (vm.getMips() * vm.getNumberOfPes()) > list2[j].getCloudletLength() / (vm.getMips() * vm.getNumberOfPes())) {
                     //swap the elements!
                     //swap(list2[j-1], list2[j]);
-                	temp = list2[j - 1];
+                    temp = list2[j - 1];
                     list2[j - 1] = list2[j];
                     list2[j] = temp;
                 }
@@ -57,11 +54,14 @@ public class SJFDatacenterBroker extends DatacenterBroker {
             }
         }
 
-        ArrayList<Cloudlet> list3 = new ArrayList<Cloudlet>();
+        list = new ArrayList<Cloudlet>();
+        //
+        for (int i = 0; i < list2.length; i++) {
+             list.add(list2[i]);
+        }
 
-//        for (int i = 0; i < list2.length; i++) {
-//            list3.add(list2[i]);
-//        }
+
+        setCloudletReceivedList(list); 
         //printNumbers(list);
 
         setCloudletReceivedList(list);
@@ -94,10 +94,10 @@ public class SJFDatacenterBroker extends DatacenterBroker {
         cloudletsSubmitted--;
         if (getCloudletList().size() == 0 && cloudletsSubmitted == 0) {
             scheduleTaskstoVms();
-//            cloudletExecution(cloudlet);
+            cloudletExecution(cloudlet);
         }
     }
-//
+
     protected void cloudletExecution(Cloudlet cloudlet) {
 
         if (getCloudletList().size() == 0 && cloudletsSubmitted == 0) { // all cloudlets executed
@@ -113,7 +113,7 @@ public class SJFDatacenterBroker extends DatacenterBroker {
             }
         }
     }
-//
+
     @Override
     protected void processResourceCharacteristics(SimEvent ev) {
         DatacenterCharacteristics characteristics = (DatacenterCharacteristics) ev.getData();
