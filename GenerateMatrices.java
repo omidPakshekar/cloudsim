@@ -1,4 +1,4 @@
-package sjf;
+package simProject;
 
 
 import java.io.*;
@@ -35,6 +35,7 @@ public class GenerateMatrices {
     private static double[][] commMatrix, execMatrix;
     private File commFile = new File("CommunicationTimeMatrix.txt");
     private File execFile = new File("ExecutionTimeMatrix.txt");
+    
 
     public GenerateMatrices() {
         commMatrix = new double[val.get_task()][val.get_data_center()];

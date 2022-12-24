@@ -8,9 +8,9 @@ import org.cloudbus.cloudsim.core.SimEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SJFDatacenterBroker extends DatacenterBroker {
+public class SJFDatacenterBroker2 extends DatacenterBroker {
 
-    SJFDatacenterBroker(String name) throws Exception {
+    SJFDatacenterBroker2(String name) throws Exception {
         super(name);
     }
    

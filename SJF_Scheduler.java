@@ -1,4 +1,4 @@
-package sjf;
+package simProject;
 
 
 import org.cloudbus.cloudsim.*;
@@ -9,9 +9,8 @@ import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
 //import utils.Constants;
 //import utils.DatacenterCreator;
 //import utils.GenerateMatrices;
-import sjf.GenerateMatrices;
-import sjf.DatacenterCreator;
-
+import simProject.GenerateMatrices;
+import simProject.DatacenterCreator;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -23,6 +22,9 @@ public class SJF_Scheduler {
 
     private static List<Cloudlet> cloudletList;
     private static List<Vm> vmList;
+
+    private static List<Cloudlet> cloudletList2;
+    private static List<Vm> vmList2;
     private static Datacenter[] datacenter;
     private static double[][] commMatrix;
     private static double[][] execMatrix;
@@ -73,6 +75,17 @@ public class SJF_Scheduler {
         }
         return list;
     }
+	private static DatacenterBroker createBroker2(){
+
+		DatacenterBroker broker = null;
+		try {
+			broker = new DatacenterBroker("Broker");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return broker;
+	}
 
     public static void main(String[] args) {
         Log.printLine("Starting SJF Scheduler...");
@@ -97,16 +110,23 @@ public class SJF_Scheduler {
             //Third step: Create Broker
             SJFDatacenterBroker broker = createBroker("Broker_0");
             int brokerId = broker.getId();
-
+            
             //Fourth step: Create VMs and Cloudlets and send them to broker
             vmList = createVM(brokerId, val.get_data_center());
             cloudletList = createCloudlet(brokerId, val.get_task(), 0);
-
+            cloudletList2 = cloudletList;
+            vmList2 = vmList;
+            		
             broker.submitVmList(vmList);
             broker.submitCloudletList(cloudletList);
-
+            System.out.println("************ommmmid****************");
             // Fifth step: Starts the simulation
+//            DatacenterBroker broker2 = createBroker();
+//			int brokerId2 = broker2.getId();
+//			
             CloudSim.startSimulation();
+            System.out.println("****jfffffffffffffffffff*****%%%%%********");
+            
 
             // Final step: Print results when simulation is over
             List<Cloudlet> newList = broker.getCloudletReceivedList();
@@ -115,8 +135,41 @@ public class SJF_Scheduler {
             CloudSim.stopSimulation();
 
             printCloudletList(newList);
-
             Log.printLine(SJF_Scheduler.class.getName() + " finished!");
+
+            System.out.println("************ommmmid****************");
+            // Fifth step: Starts the simulation
+//            System.out.println("broker2" + broker2);
+            CloudSim.init(num_user, calendar, trace_flag);
+            
+            //////////////////
+            SJFDatacenterBroker2 broker2 = createBroker3("Broker_2");
+            int brokerId3 = broker2.getId();
+            
+            //Fourth step: Create VMs and Cloudlets and send them to broker
+//            vmList = createVM(brokerId, val.get_data_center());
+//            cloudletList = createCloudlet(brokerId, val.get_task(), 0);
+
+            broker2.submitVmList(vmList2);
+            broker2.submitCloudletList(cloudletList2);
+            System.out.println("************ommmmid****************" + vmList);
+            // Fifth step: Starts the simulation
+//            DatacenterBroker broker2 = createBroker();
+//			int brokerId2 = broker2.getId();
+//			
+            CloudSim.startSimulation();
+            System.out.println("****jfffffffffffffffffff*****%%%%%********");
+            List<Cloudlet> newList2 = broker2.getCloudletReceivedList();
+            //newList.addAll(globalBroker.getBroker().getCloudletReceivedList());
+
+            CloudSim.stopSimulation();
+
+            
+            
+            printCloudletList2(newList2);
+
+            
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.printLine("The simulation has been terminated due to an unexpected error");
@@ -126,12 +179,41 @@ public class SJF_Scheduler {
     private static SJFDatacenterBroker createBroker(String name) throws Exception {
         return new SJFDatacenterBroker(name);
     }
+    private static SJFDatacenterBroker2 createBroker3(String name) throws Exception {
+        return new SJFDatacenterBroker2(name);
+    }
 
     /**
      * Prints the Cloudlet objects
      *
      * @param list list of Cloudlets
      */
+	private static void printCloudletList2(List<Cloudlet> list) {
+		int size = list.size();
+		Cloudlet cloudlet;
+
+		String indent = "    ";
+		Log.printLine();
+		Log.printLine("========== OUTPUT ==========");
+		Log.printLine("Cloudlet ID" + indent + "STATUS" + indent +
+				"Data center ID" + indent + "VM ID" + indent + "Time" + indent + "Start Time" + indent + "Finish Time");
+
+		DecimalFormat dft = new DecimalFormat("###.##");
+		for (int i = 0; i < size; i++) {
+			cloudlet = list.get(i);
+			Log.print(indent + cloudlet.getCloudletId() + indent + indent);
+
+			if (cloudlet.getCloudletStatus() == Cloudlet.SUCCESS){
+				Log.print("SUCCESS");
+
+				Log.printLine( indent + indent + cloudlet.getResourceId() + indent + indent + indent + cloudlet.getVmId() +
+						indent + indent + dft.format(cloudlet.getActualCPUTime()) + indent + indent + dft.format(cloudlet.getExecStartTime())+
+						indent + indent + dft.format(cloudlet.getFinishTime()));
+			}
+		}
+
+	}
+
     private static void printCloudletList(List<Cloudlet> list) {
         int size = list.size();
         Cloudlet cloudlet;

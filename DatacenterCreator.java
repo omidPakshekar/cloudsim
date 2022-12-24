@@ -1,4 +1,4 @@
-package sjf;
+package simProject;
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
